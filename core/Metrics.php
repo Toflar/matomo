@@ -242,6 +242,21 @@ class Metrics
             '_time_'  => 's'
         );
 
+        $unit = null;
+
+        /**
+         * Use this event to define units for custom metrics.
+         *
+         * @param string $column name of the column to determine
+         * @param string $idSite id of the current site
+         * @param string $unit should hold the unit (e.g. %, €, s or empty string)
+         */
+        Piwik::postEvent('Metrics.getUnit', [$column, $idSite, &$unit]);
+
+        if (!empty($unit)) {
+            return $unit;
+        }
+
         foreach ($nameToUnit as $pattern => $type) {
             if (strpos($column, $pattern) !== false) {
                 return $type;
